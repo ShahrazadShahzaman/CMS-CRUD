@@ -3,18 +3,23 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth  } from "../../firebase/config";
 import { Link } from "react-router-dom";
 import "./signup.css"
+import { toast } from "react-toastify";
 
 export const Signup =()=>{
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("");
+  const [confirmPassword,setConfirmPassword]=useState("");
 
+  const [error,setError]=useState("");
   const handleSignup = async ()=>{
   try{
 await createUserWithEmailAndPassword(auth, email, password);
-alert ("signup successful");
+toast.success ("signup successful");
   }
   catch{
     console.log("Error during signup" , error.message);
+    setError(error.message);
+    toast.error("signup error...")
   }
 }
     return(
