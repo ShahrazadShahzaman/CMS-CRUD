@@ -1,31 +1,34 @@
 import {AdminDashboard} from "../layout/admin/components/index"
-import { CreateFood} from "../pages/Admin/createfoods";
+import { CreateFood} from "../pages/Admin/createfood";
 import { ViewFood} from "../pages/Admin/viewfoods";
+import { ProtectedRoute } from "./manage Protection/Protected";
 export const AdminRoute= [
-    { 
-        element:<AdminDashboard/>,
+    {   
+        
+        element:<ProtectedRoute/>,
         children:[
             {
-                path: "dashboard",
-                elements:(
-                    <>
-                    <CreateFood/>
-                    <ViewFood/>
-                    </>
-                )
-            }
-            // {
-            //     index: true,
-            //     element: <CreateFood />
-            // },
-        //    {
-        //     path: 'create-food',
-        //     element: <CreateFood/>
-        //    },
-        //    {
-        //     path: 'view-food',
-        //     element: <ViewFood/>
-        //    }
+                path: '/admin',
+              element:<AdminDashboard/>,
+              children:[
+            
+            {
+                
+                path: "/admin/createfood/:foodId?" ,
+                element: <CreateFood/>
+            },
+            {
+                path: "/admin/viewfoods" ,
+                element: <ViewFood/>
+            },
+            {
+                path: "/admin/editfood/:foodId?" ,
+                element: <CreateFood/>
+            },
+
+        ]
+    }
+
         ]
     }
 ]

@@ -1,97 +1,59 @@
+import { useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth  } from "../../firebase/config";
+import { Link } from "react-router-dom";
 import "./signup.css"
-import { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase/config';
 
 export const Signup =()=>{
-    const [formData, setForm] = useState({
-        email: "",
-        password: ""
-      });
-      console.log(formData);
+  const [email,setEmail]=useState("");
+  const [password,setPassword]=useState("");
 
-      const handleInputChange = (e) => {
-        const value = e.target.value;
-        const name = e.target.name;
-        setForm({
-          ...formData,
-          [name]: value
-        });
-      };
-    
-      const handlesubmit = async (e) => {
-        e.preventDefault();
-        try {
-          const { email, password } = formData;
-          const res = await createUserWithEmailAndPassword(auth, email, password);
-          console.log(res, "res");
-          alert("User registered successfully!");
-        } catch (error) {
-          console.log(error.message);
-          alert("Error: " + error.message);
-        }
-      };
-    
-    return (
-        <>
-        <div className="container">
-        <div className="title">
-            <p>Registration</p>
-        </div>
-
-        <form action="#" onSubmit={handlesubmit}>
-            <div className="user_details">
-                <div className="input_box">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" placeholder="Enter your name" onChange={handleInputChange} required/>
-                </div>
-                <div className="input_box">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="Enter your username" onChange={handleInputChange} required/>
-                </div>
-                <div className="input_box">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Enter your email" onChange={handleInputChange} required/>
-                </div>
-                <div className="input_box">
-                    <label for="phone">Phone Number</label>
-                    <input type="number" id="phone" placeholder="Enter your number" onChange={handleInputChange} required/>
-                </div>
-                <div className="input_box">
-                    <label for="pass">Password</label>
-                    <input type="password" id="pass" placeholder="Enter your password" onChange={handleInputChange} required/>
-                </div>
-                <div className="input_box">
-                    <label for="confirmPass">Confirm Password</label>
-                    <input type="password" id="confirmPass" placeholder="Confirm your password" required/>
-                </div>
-            </div>
-            <div className="gender">
-                <span className="gender_title">Gender</span>
-                <input type="radio" name="gender" id="radio_1"/>
-                <input type="radio" name="gender" id="radio_2"/>
-                <input type="radio" name="gender" id="radio_3"/>
-
-                <div className="category">
-                    <label for="radio_1">
-                        <span className="dot one"></span>
-                        <span>Male</span>
-                    </label>
-                    <label for="radio_2">
-                        <span className="dot two"></span>
-                        <span>Female</span>
-                    </label>
-                    <label for="radio_3">
-                        <span className="dot three"></span>
-                        <span>Prefer not to say</span>
-                    </label>
-                </div>
-            </div>
-            <div className="reg_btn">
-                <input type="submit" value="Register"/>
-            </div>
-        </form>
-    </div>
-        </>
-    )
+  const handleSignup = async ()=>{
+  try{
+await createUserWithEmailAndPassword(auth, email, password);
+alert ("signup successful");
+  }
+  catch{
+    console.log("error");
+  }
 }
+    return(
+<>
+<section className="signup-container">
+    <div className="signup-box">
+              <h2>Create an account</h2>
+
+              <form>
+
+                <div className="input-group">
+                <label>Your Name</label>
+                  <input className="input-signup" type="text"placeholder="Enter Your Name" /> 
+                </div>
+
+                <div className="input-group" >
+                <label>Your Email</label>
+                  <input className="input-signup" type="email" value={email} onChange={(e) =>setEmail(e.target.value)} placeholder="Enter Your Email" />
+                </div>
+
+                <div className="input-group">
+                <label>Password</label>
+                  <input className="input-signup" type="password" value={password} onChange={(e) =>setPassword(e.target.password)} placeholder="Enter Your Password" />
+                </div>
+
+                <div className="input-group">
+                <label>Repeat your password</label>
+                  <input className="input-signup" type="password" placeholder="Repeat Your Password..." />
+                </div>
+
+                <div className="checkbox-group">
+                  <input type="checkbox"/>
+                  <p> I agree all <Link to={"#"}>Terms and Conditions</Link></p>
+                </div>
+                  <button  type="button" className="register-btn" onClick={handleSignup}>Register</button>
+                <p className="login-nav">Have already an account? <Link to="/signin">Login here</Link></p>
+              </form>
+            </div>
+</section>
+</>
+  );
+};
