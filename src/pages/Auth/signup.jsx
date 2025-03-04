@@ -14,7 +14,7 @@ await createUserWithEmailAndPassword(auth, email, password);
 alert ("signup successful");
   }
   catch{
-    console.log("error");
+    console.log("Error during signup" , error.message);
   }
 }
     return(
@@ -37,7 +37,7 @@ alert ("signup successful");
 
                 <div className="input-group">
                 <label>Password</label>
-                  <input className="input-signup" type="password" value={password} onChange={(e) =>setPassword(e.target.password)} placeholder="Enter Your Password" />
+                  <input className="input-signup" type="password" value={password} onChange={(e) =>setPassword(e.target.value)} placeholder="Enter Your Password" />
                 </div>
 
                 <div className="input-group">
