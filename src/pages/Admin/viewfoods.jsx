@@ -3,6 +3,7 @@ import {db} from "../../firebase/config";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer,toast } from "react-toastify";
+import "./food.css"
 
 export const ViewFood=()=>{
 
@@ -11,26 +12,24 @@ export const ViewFood=()=>{
 
     const handleEdit=(item)=>{
         toast.success("Updating Food...")
-        setTimeout(()=>{
-            navigate(`/createFood/${item.id}`)
-        },1000);
+        navigate(`/admin/editfood/${item.id}`);
     };
 
 useEffect(()=>{
-    const unsubscribe = onSnapshot(collection(db,"Food"), (snapshot)=>{
-        const FoodList =snapshot.docs.map(doc=>({
+    const unsubscribe = onSnapshot(collection(db,"food"), (snapshot)=>{
+        const foodList =snapshot.docs.map(doc=>({
             id:doc.id,
             ...doc.data()
         }));
-        setViewFood(FoodList);
+        setViewFood(foodList);
 });
 return unsubscribe;
 },[])
 
 const handleDelete = async (id) =>{
     try{
-        await deleteDoc(doc(db,"Food",id));
-        setViewFood(viewFood.filter((Food)=> Food.id !==id));
+        await deleteDoc(doc(db,"food",id));
+        setViewFood(viewFood.filter((food)=> food.id !==id));
         toast.success("Menu Deleted Successfully!")
     }catch (error){
         console.log(error);
@@ -40,9 +39,10 @@ const handleDelete = async (id) =>{
 
     return(
 <>
-<div className="Food">
+<div className="view-Food">
  <h2 className="data">Menu List</h2>
- <button className="ANP-btn" onClick={()=> navigate ("/createfood")}> Add New Food</button>
+ <button className="ANP-btn" onClick={()=> navigate ("/admin/createfood")}> Add New Food</button>
+<div className="table-container">
  <table>
     <thead>
         <tr>
@@ -56,7 +56,7 @@ const handleDelete = async (id) =>{
     <tbody>
         {viewFood && viewFood.map((item, index) => {
             return(
-                <tr key={index}>
+                <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.name}</td>
                 <td>{item.price}</td>
@@ -72,7 +72,7 @@ const handleDelete = async (id) =>{
     </tbody>
  </table>
 </div>
-<ToastContainer/>
+</div>
  </>
     );
 };
